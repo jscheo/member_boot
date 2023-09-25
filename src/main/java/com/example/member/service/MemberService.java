@@ -61,5 +61,12 @@ public class MemberService {
         }else{
             return null;
         }
+//        Optional<MemberEntity> memberEntity1 =memberRepository.
+//                findByMemberEmailAndMemberPassword(memberDTO.getMemberEmail(), memberDTO.getMemberPassword());
+//        if(memberEntity1.isPresent()){
+//            return true;
+//        }else{
+//            return false;
+//        }
     }
 }

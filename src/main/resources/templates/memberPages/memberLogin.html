@@ -1,15 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <th:block th:replace="~{component/config :: config}"></th:block>
 </head>
 <body>
+<div th:replace="~{component/header :: header}"></div>
+<div th:replace="~{component/nav :: nav}"></div>
+<div class="container">
     <h2>로그인</h2>
     <form action="/member/login" method="post">
         <input type="text" name="memberEmail" placeholder="이메일입력"><br>
         <input type="text" name="memberPassword" placeholder="비밀번호입력"><br>
         <input type="submit" value="로그인">
     </form>
+</div>
+<div th:replace="~{component/footer :: footer}"></div>
 </body>
 </html>

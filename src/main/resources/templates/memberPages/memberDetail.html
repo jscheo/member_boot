@@ -4,6 +4,8 @@
     <th:block th:replace="~{component/config :: config}"></th:block>
 </head>
 <body>
+<div th:replace="~{component/header :: header}"></div>
+<div th:replace="~{component/nav :: nav}"></div>
   <h2>상세정보</h2>
 <table>
     <tr>
@@ -21,5 +23,6 @@
         <td th:text="${member.memberMobile}"></td>
     </tr>
 </table>
+<div th:replace="~{component/footer :: footer}"></div>
 </body>
 </html>

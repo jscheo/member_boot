@@ -4,6 +4,8 @@
     <th:block th:replace="~{component/config :: config}"></th:block>
 </head>
 <body>
+<div th:replace="~{component/header :: header}"></div>
+<div th:replace="~{component/nav :: nav}"></div>
     <h2>회원정보 수정</h2>
     <form action="/member/update" method="post">
         <input type="hidden" name="id" th:value="${member.id}">
@@ -14,5 +16,6 @@
         <input type="text" name="memberMobile" th:value="${member.memberMobile}"><br>
         <input type="submit" value="등록">
     </form>
+<div th:replace="~{component/footer :: footer}"></div>
 </body>
 </html>

@@ -20,6 +20,28 @@ public class MemberService {
         memberRepository.save(memberEntity);
     }
 
+    public MemberDTO login(MemberDTO memberDTO) {
+        Optional<MemberEntity> memberEntity =memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
+        if(memberEntity.isPresent()){
+            MemberEntity memberEntity1 = memberEntity.get();
+            if(memberEntity1.getMemberPassword().equals(memberDTO.getMemberPassword())){
+                MemberDTO memberDTO1 = MemberDTO.toSaveDTO(memberEntity1);
+                return memberDTO1;
+            }else {
+                return null;
+            }
+        }else{
+            return null;
+        }
+//        Optional<MemberEntity> memberEntity1 =memberRepository.
+//                findByMemberEmailAndMemberPassword(memberDTO.getMemberEmail(), memberDTO.getMemberPassword());
+//        if(memberEntity1.isPresent()){
+//            return true;
+//        }else{
+//            return false;
+//        }
+    }
+
     public List<MemberDTO> findAll() {
         List<MemberEntity> memberEntityList = memberRepository.findAll();
         List<MemberDTO> memberDTOList = new ArrayList<>();
@@ -48,25 +70,5 @@ public class MemberService {
     }
 
 
-    public MemberDTO login(MemberDTO memberDTO) {
-        Optional<MemberEntity> memberEntity =memberRepository.findByMemberEmail(memberDTO.getMemberEmail());
-        if(memberEntity.isPresent()){
-            MemberEntity memberEntity1 = memberEntity.get();
-            if(memberEntity1.getMemberPassword().equals(memberDTO.getMemberPassword())){
-                MemberDTO memberDTO1 = MemberDTO.toSaveDTO(memberEntity1);
-                return memberDTO1;
-            }else {
-                return null;
-            }
-        }else{
-            return null;
-        }
-//        Optional<MemberEntity> memberEntity1 =memberRepository.
-//                findByMemberEmailAndMemberPassword(memberDTO.getMemberEmail(), memberDTO.getMemberPassword());
-//        if(memberEntity1.isPresent()){
-//            return true;
-//        }else{
-//            return false;
-//        }
-    }
+
 }

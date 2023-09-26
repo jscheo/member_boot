@@ -70,5 +70,16 @@ public class MemberService {
     }
 
 
+    public boolean emailCheck(String memberEmail) {
+        Optional<MemberEntity> optionalMemberEntity = memberRepository.findByMemberEmail(memberEmail);
+        if(optionalMemberEntity.isEmpty()){
+            return true;
+        }else{
+            return false;
+        }
+    }
 
+    public void delete(Long id) {
+        memberRepository.deleteById(id);
+    }
 }

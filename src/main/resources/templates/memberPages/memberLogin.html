@@ -9,6 +9,7 @@
 <div class="container">
     <h2>로그인</h2>
     <form action="/member/login" method="post">
+        <input type="hidden" name="redirectURI" th:value="${redirectURI}">
         <input type="text" name="memberEmail" placeholder="이메일입력"><br>
         <input type="text" name="memberPassword" placeholder="비밀번호입력"><br>
         <input type="submit" value="로그인">

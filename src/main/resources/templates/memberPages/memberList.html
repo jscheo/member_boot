@@ -17,9 +17,9 @@
         <th>삭제</th>
         <th>수정</th>
     </tr>
-    <tr th:each="member : ${memberList}" >
+    <tr th:each="member : ${memberList}">
         <td>
-            <a th:href="@{|/member/${member.id}|}" th:text="${member.memberEmail}" ></a>
+            <a th:href="@{|/member/${member.id}|}" th:text="${member.memberEmail}"></a>
         </td>
         <td th:text="${member.memberName}"></td>
         <td th:text="${member.memberBirth}"></td>
@@ -35,17 +35,54 @@
         </td>
     </tr>
 </table>
+<div id="detail-area">
+
+</div>
 <div th:replace="~{component/footer :: footer}"></div>
 </body>
-<script>
-    const detail_fn = (id) =>{
-        location.href=`/member/${id}`;
+<script th:inline="javascript">
+    const detail_fn = (id) => {
+        axios({
+            method: "post",
+            url: `member/axios/${id}`,
+        }).then(res => {
+            console.log("res", res);
+            const detailArea = document.getElementById("detail-area");
+            let result = `
+                <table>
+                <tr>
+                    <th>이메일</th>
+                    <th>이름</th>
+                    <th>생년월일</th>
+                    <th>전화번호</th>
+                </tr>
+                <tr>
+                    <td>${res.data.memberEmail}</td>
+                    <td>${res.data.memberName}</td>
+                    <td>${res.data.memberBirth}</td>
+                    <td>${res.data.memberMobile}</td>
+                </tr>
+                </table>
+                `;
+            detailArea.innerHTML = result;
+        }).catch(err => {
+            console.log("err", err);
+        });
     }
-    const delete_fn = (id) =>{
-        location.href=`/member/delete/${id}`;
+    const delete_fn = (id) => {
+        // location.href = `/member/delete/${id}`;
+        axios({
+            method: "delete",
+            url: `/member/${id}`
+        }).then(res => {
+            alert("삭제 성공");
+            location.href = "/member";
+        }).catch(err => {
+            alert("삭제 실패");
+        });
     }
-    const update_fn = (id) =>{
-        location.href=`/member/update/${id}`;
+    const update_fn = (id) => {
+        location.href = `/member/update/${id}`;
     }
 </script>
 </html>

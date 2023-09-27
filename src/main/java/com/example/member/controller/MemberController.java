@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Controller
 @RequiredArgsConstructor
@@ -44,17 +45,31 @@ public class MemberController {
         return "memberPages/memberLogin";
     }
 
+//    @PostMapping("/login")
+//    public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session,
+//                        @RequestParam("redirectURI") String redirectURI){
+//        MemberDTO memberDTO1 = memberService.login(memberDTO);
+//        if(memberDTO1 != null){
+//            session.setAttribute("loginEmail", memberDTO1.getMemberEmail());
+////            return "/memberPages/memberMain";
+//            // 사용자가 로그인 성공하면, 직전에 요청한 페이지로 이동시킴
+//            // 별도로 요청한 페이지가 없다면 정상적으로 myPage로 이동시킴.(redirect:/member/mypage)
+//            return "redirect:" + redirectURI;
+//        }else{
+//            return "memberPages/memberLogin";
+//        }
+//    }
     @PostMapping("/login")
     public String login(@ModelAttribute MemberDTO memberDTO, HttpSession session,
-                        @RequestParam("redirectURI") String redirectURI){
-        MemberDTO memberDTO1 = memberService.login(memberDTO);
-        if(memberDTO1 != null){
-            session.setAttribute("loginEmail", memberDTO1.getMemberEmail());
-//            return "/memberPages/memberMain";
-            // 사용자가 로그인 성공하면, 직전에 요청한 페이지로 이동시킴
+                        @RequestParam("redirectURI") String redirectURI) {
+        boolean loginResult = memberService.login(memberDTO);
+        if (loginResult) {
+            session.setAttribute("loginEmail", memberDTO.getMemberEmail());
+//            return "memberPages/memberMain";
+            // 사용자가 로그인 성공하면, 직전에 요청한 페이지로 이동시킴.
             // 별도로 요청한 페이지가 없다면 정상적으로 myPage로 이동시킴.(redirect:/member/mypage)
             return "redirect:" + redirectURI;
-        }else{
+        } else {
             return "memberPages/memberLogin";
         }
     }
@@ -68,11 +83,23 @@ public class MemberController {
         model.addAttribute("memberList", memberDTOList);
         return "/memberPages/memberList";
     }
+//    @GetMapping("/{id}")
+//    public String findById(@PathVariable("id") Long id, Model model){
+//        MemberDTO memberDTO = memberService.findById(id);
+//        model.addAttribute("member", memberDTO);
+//        return "memberPages/memberDetail";
+//    }
     @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Long id, Model model){
-        MemberDTO memberDTO = memberService.findById(id);
-        model.addAttribute("member", memberDTO);
-        return "memberPages/memberDetail";
+    public String findById(@PathVariable("id") Long id, Model model) {
+        try {
+            MemberDTO memberDTO = memberService.findById(id);
+            model.addAttribute("member", memberDTO);
+            return "memberPages/memberDetail";
+        } catch (NoSuchElementException e) {
+            return "memberPages/NotFound";
+        } catch (Exception e) {
+            return "memberPages/NotFound";
+        }
     }
 
     @GetMapping("/delete/{id}")
